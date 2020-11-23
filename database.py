@@ -1,6 +1,6 @@
-import uuid
 import pyrebase
-
+import traceback
+import logging
 
 firebaseConfig = {
     'apiKey': "AIzaSyCEE9JHRfzIpuxgtMzFeaZuqw2_DaFkCQY",
@@ -10,7 +10,7 @@ firebaseConfig = {
     'storageBucket': "betterdeals-de427.appspot.com",
     'messagingSenderId': "33445910441",
     'appId': "1:33445910441:web:d89aecd987708ff8a916b8",
-    'measurementId': "G-J3PE7FMQ4M"
+    'measurementId': "G-ZWMM7LGS70"
 }
 
 
@@ -19,84 +19,66 @@ firebaseConfig = {
     https://github.com/thisbejim/Pyrebase
 '''
 
+# we get the logger
+logger = logging.getLogger("BetterDealUI")
+
+
 def retrieveSearches():
     print("Retrieve Searches called")
-    fire = pyrebase.initialize_app(firebaseConfig)
-    db = fire.database()
-    searches_json = db.child('Searches').get()
-    # links = []
     searches = []
+    identifiers = []
+    try:
+        fire = pyrebase.initialize_app(firebaseConfig)
+        db = fire.database()
+        searches_json = db.child('Searches').get()
+        '''
+            Return a list of lists of format ['Model', 'Link']
+        '''
+        for search in searches_json.each():
+            new_search = (search.val()['Model'], search.val()['Link'])
+            searches.append(new_search)
+            identifiers.append(search.key())
+    except:
+        # print("Error retrieving searches")
+        logger.error("Error retrieving searches: " + traceback.print_exc())
 
-    '''
-        Return a list of lists of format ['Model', 'Link']
-    '''
-
-    for search in searches_json.each():
-        new_search = (search.val()['Model'], search.val()['Link'])
-        searches.append(new_search)
-
-    # later you could do return links, models
-    return searches
-
+    # later you could do return links, models (if ever needed for the UI)
+    return searches, identifiers
 
 
 def retrieveCars():
-    fire = pyrebase.initialize_app(firebaseConfig)
-    db = fire.database()
-    cars_json = db.child('Cars').get()
-    # links = []
-    # models = []
-    # prices = []
     cars = []
-    for car in cars_json.each():
-        # print(car.key())
-        # print(car.val())
-        # print("Link:", search.val()['Link'])
-        # print("Model:", search.val()['Model'])
-        # print("Price:", search.val()['Price'])
-        # links.append(search.val()['Link'])
-        # models.append(search.val()['Model'])
-        # models.append(search.val()['Price'])
-        new_car = (car.val()['Model'], car.val()['Price'], car.val()['Link'])
-        cars.append(new_car)
-
+    try:
+        fire = pyrebase.initialize_app(firebaseConfig)
+        db = fire.database()
+        cars_json = db.child('Cars').get()
+        for car in cars_json.each():
+            new_car = (car.val()['Model'], car.val()['Price'], car.val()['Date'], car.val()['Link'])
+            cars.append(new_car)
+    except:
+        # print("Error retrieving cars from the database.")
+        logger.error("Error retrieving cars from the database:" + traceback.print_exc())
     return cars
 
 
 def addNewSearch(link, model):
-    fire = pyrebase.initialize_app(firebaseConfig)
-    db = fire.database()
-    search = {
-        'Model': model,
-        'Link': link
-    }
-    db.child('Searches').push(search)
-
-
-def addNewCar(car, link, price):
-    fire = pyrebase.initialize_app(firebaseConfig)
-    db = fire.database()
-    new_car = {
-        'Model': car,
-        'Price': price,
-        'Link': link
-    }
-    db.child('Cars').push(new_car)
-
-
-def addNewCars(cars, links, prices):
-    fire = pyrebase.initialize_app(firebaseConfig)
-    db = fire.database()
-    dataJSON = {}
-
-    for i in range(len(cars)):
-        uid = str(uuid.uuid1())
-        dataJSON[uid] = {
-            'Model': cars[i],
-            'Price': prices[i],
-            'Link': links[i]
+    try:
+        fire = pyrebase.initialize_app(firebaseConfig)
+        db = fire.database()
+        search = {
+            'Model': model,
+            'Link': link
         }
-    result = db.child('Cars').set(dataJSON)  # throws the fields directly into the thingy
-    print("Cars added: ")
-    print(result)
-    print("length json = ", str(len(str(dataJSON))), ", length result = ", str(len(str(result))))
+        db.child('Searches').push(search)
+    except:
+        logger.error("Error adding search." + traceback.print_exc())
+
+
+# removes the selected search
+def removeSearch(key):
+    try:
+        fire = pyrebase.initialize_app(firebaseConfig)
+        db = fire.database()
+        db.child("Searches").child(key).remove()
+    except:
+        logger.error("Error removing search." + traceback.print_exc())

@@ -1,10 +1,27 @@
+import csv
 import sys
+import logging
+import logging.handlers
+import traceback
 
 from enum import Enum
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
+from PyQt5 import QtGui
+import database as db
 
-from database import *
+
+
+# we set the logger configuration to write to a file, and also to print to terminal
+logger = logging.getLogger("BetterDealUI")
+logger.setLevel(logging.DEBUG)
+handler = logging.handlers.RotatingFileHandler(
+    "logsUI.log", maxBytes=(1048576*5), backupCount=7
+)
+formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+logger.addHandler(logging.StreamHandler())
 
 
 class Items(Enum):
@@ -18,14 +35,14 @@ class TableModel(QAbstractTableModel):
         super().__init__()
         if item_type == Items.SEARCHES:
             self.headers = ["Model", "Link"]
-            self.rows = retrieveSearches()
+            self.rows, self.row_identifiers = db.retrieveSearches()
         elif item_type == Items.CARS:
-            self.headers = ["Model", "Price", "Link"]
-            # self.rows = retrieveCars()
+            self.headers = ["Model", "Price", "Date", "Link"]
+            # self.rows = db.retrieveCars()
             # to avoid wasting requests to the database, we'll use a dummy for now
-            self.rows = [("Honda Civic", "4000", "hondacivic.com"),
-                        ("Mini Cooper", "7750", "minicooper.com"),
-                        ("Mustang", "11286", "mustang.com")]
+            self.rows = [("Honda Civic", "4000", "2020/11/23", "hondacivic.com"),
+                        ("Mini Cooper", "7750", "2020/11/25", "minicooper.com"),
+                        ("Mustang", "11286", "2020/11/24", "mustang.com")]
 
     def rowCount(self, parent):
         return len(self.rows)
@@ -55,11 +72,21 @@ class App(QMainWindow):
         self.height = 600
         self.setWindowTitle(self.title)
         self.setGeometry(self.left, self.top, self.width, self.height)
-
         self.tab_widget = TabWidget(self)
         self.setCentralWidget(self.tab_widget)
-
+        self.setWindowIcon(QtGui.QIcon('images/icon.png'))
         self.show()
+
+
+def show_pop_up(message):
+    msg = QMessageBox()
+    msg.setWindowTitle("Message")
+    msg.setText(message)
+    msg.setIcon(QMessageBox.Information)
+    msg.setStandardButtons(QMessageBox.Ok)
+    msg.setWindowIcon(QtGui.QIcon('images/icon.png'))
+    # msg.setDetailedText("details")
+    x = msg.exec_()
 
 
 class TabWidget(QWidget):
@@ -130,7 +157,7 @@ class TabWidget(QWidget):
 
         self.tab_search.layout.addWidget(self.add_search_widget)
 
-        # create refresh and remove buttons
+        # create refresh and remove buttons:
 
         # create widget that contains buttons
         refresh_search_widget = QWidget()
@@ -230,36 +257,41 @@ class TabWidget(QWidget):
         self.tab_cars.setLayout(self.tab_cars.layout)
 
     def on_bt_refresh_search_click(self):
-        print("Refresh searches ")
-
+        logger.info("Refresh searches ")
         self.table_search = TableModel(Items.SEARCHES)
         self.table_view_search.setModel(self.table_search)
         self.table_view_search.resizeColumnsToContents()
         self.table_view_search.resizeRowsToContents()
 
     def on_bt_refresh_cars_click(self):
-        print("Refresh Cars")
-
+        logger.info("Refresh Cars")
         self.table_cars = TableModel(Items.CARS)
         self.table_view_cars.setModel(self.table_cars)
         self.table_view_cars.resizeColumnsToContents()
         self.table_view_cars.resizeRowsToContents()
 
     def on_bt_add_search_click(self):
-        print("Add search")
-        print(self.edit_model_search.text())
-        print(self.edit_link_search.text())
-
-        # Here you can call on_bt_refresh para que se actualize la lista
+        if self.edit_model_search.text() == "" or self.edit_link_search.text() == "":
+            print("Method called with no values, no action taken")
+            show_pop_up("Add was called with no values, no action taken")
+            return
+        logger.info("Add search: " + self.edit_model_search.text() + " / " + self.edit_link_search.text())
+        db.addNewSearch(self.edit_link_search.text(), self.edit_model_search.text())
+        # we update the table by faking a click on refresh
+        self.on_bt_refresh_search_click()
+        self.edit_link_search.setText("")
+        self.edit_model_search.setText("")
 
     def on_bt_remove_search_click(self):
-        print("Remove search")
         # print("Selection: ", self.table_view_search.selectionModel().selectedRows())
-        selecte_rows = self.table_view_search.selectionModel().selectedRows()
-        for i in range(len(selecte_rows)):
-            print("Index of row: ", selecte_rows[i].row())
-
-        # Here you can call on_bt_refresh para que se actualize la lista
+        selected_rows = self.table_view_search.selectionModel().selectedRows()
+        for i in range(len(selected_rows)):
+            index_to_remove = selected_rows[i].row()
+            # print("Index of row: ", index_to_remove)
+            # print(self.table_search.rows[index_to_remove])
+            logger.info("Remove search called on " + str(self.table_search.rows[index_to_remove]))
+            db.removeSearch(self.table_search.row_identifiers[index_to_remove])
+        self.on_bt_refresh_search_click()
 
     def on_bt_filter_cars_click(self):
         print("Filter cars")
@@ -267,7 +299,36 @@ class TabWidget(QWidget):
         print("Price from: ", self.edit_price_from.text(), " to: ", self.edit_price_to.text())
 
     def on_bt_download_cars(self):
-        print("Downloading cars...")
+        # writes the collected cars into a csv file (excluding the links, might change later)
+
+        # cars = db.retrieveCars()
+        # for testing purposes:
+        cars = [("Honda Civic", "4000", "2020/11/23", "hondacivic.com"),
+                     ("Mini Cooper", "7750", "2020/11/25", "minicooper.com"),
+                     ("Mustang", "11286", "2020/11/24", "mustang.com")]
+
+        if len(cars) == 0:
+            logger.info("List of cars was empty or an error occurred. No file has been created.")
+            show_pop_up("List of cars was empty or an error occurred. No file has been created.")
+            return
+
+        try:
+            with open('cars.csv', 'w', newline='') as file:
+                writer = csv.writer(file)
+                writer.writerow(["Model", "Price", "Date", "Link"])
+                for i in range(len(cars)):
+                    # the encoding is to avoid issues we were having with some characters
+                    car_formatted = [cars[i][0].encode('utf-8').decode('utf-8'),  # model
+                                     cars[i][1].encode('utf-8').decode('utf-8'),  # price
+                                     cars[i][2].encode('utf-8').decode('utf-8'),  # date
+                                     cars[i][3].encode('utf-8').decode('utf-8')]   # link
+                    writer.writerow(car_formatted)
+                logger.info("Cars were downloaded to 'cars.csv'")
+                show_pop_up("Cars were downloaded to 'cars.csv'")
+        except:
+            traceback.print_exc()
+            show_pop_up("Failed to download cars.")
+            logger.error("Failed to download cars: " + traceback.print_exc())
 
 
 if __name__ == '__main__':

@@ -1,0 +1,21 @@
+2020-11-23 13:55:15,378 - BetterDealUI - INFO - Add search: fds : 555
+2020-11-23 14:02:46,075 - BetterDealUI - INFO - Add search: Coche / link.com
+2020-11-23 14:02:46,259 - BetterDealUI - INFO - Refresh searches 
+2020-11-23 14:03:35,022 - BetterDealUI - INFO - Remove search called
+2020-11-23 14:12:35,721 - BetterDealUI - INFO - Remove search called
+2020-11-23 14:17:21,458 - BetterDealUI - INFO - Remove search called on ('Mini Cooper', 'https://www.kijiji.ca/b-cars-trucks/ottawa-gatineau-area/mini-cooper/k0c174l1700184')
+2020-11-23 14:17:21,599 - BetterDealUI - INFO - Refresh searches 
+2020-11-23 14:17:39,870 - BetterDealUI - INFO - Remove search called on ('Chevrolet Camaro', 'https://www.kijiji.ca/b-cars-trucks/ottawa-gatineau-area/honda-civic/k0c174l1700184')
+2020-11-23 14:17:40,060 - BetterDealUI - INFO - Refresh searches 
+2020-11-23 14:18:05,196 - BetterDealUI - INFO - Add search: Mini Cooper / https://www.kijiji.ca/b-cars-trucks/ottawa-gatineau-area/mini-cooper/k0c174l1700184
+2020-11-23 14:18:06,201 - BetterDealUI - INFO - Refresh searches 
+2020-11-23 14:18:23,698 - BetterDealUI - INFO - Add search: Chevrolet Camaro / https://www.kijiji.ca/b-cars-trucks/ottawa-gatineau-area/honda-civic/k0c174l1700184
+2020-11-23 14:18:23,839 - BetterDealUI - INFO - Refresh searches 
+2020-11-23 14:22:52,761 - BetterDealUI - INFO - Remove search called on ('Coche', 'link.com')
+2020-11-23 14:22:52,914 - BetterDealUI - INFO - Refresh searches 
+2020-11-23 15:14:08,783 - BetterDealUI - INFO - Refresh searches 
+2020-11-23 15:14:12,894 - BetterDealUI - INFO - Refresh searches 
+2020-11-23 15:41:01,667 - BetterDealUI - INFO - Cars were downloaded to 'cars.csv'
+2020-11-23 15:47:38,601 - BetterDealUI - INFO - Cars were downloaded to 'cars.csv'
+2020-11-23 17:39:38,441 - BetterDealUI - INFO - Cars were downloaded to 'cars.csv'
+2020-11-23 17:44:07,737 - BetterDealUI - INFO - Add search: Pony / lelink.com
