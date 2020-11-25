@@ -108,6 +108,7 @@ class TabWidget(QWidget):
         # initialize additional tabs
         self.tab_search = None
         self.tab_cars = None
+        self.tab_advanced = None
 
         # initialize the rest of the components needed
         # MAYBE WILL NEED TO BE CHANGED
@@ -133,16 +134,16 @@ class TabWidget(QWidget):
         # create tabs
         self.create_search_tab()
         self.create_cars_tab()
+        self.create_advanced_tab()
 
         # Add tabs
         self.tabs.addTab(self.tab_search, "Searches")
         self.tabs.addTab(self.tab_cars, "Cars")
+        self.tabs.addTab(self.tab_advanced, "Advanced")
 
         # Add tabs to widget
         self.layout.addWidget(self.tabs)
         self.setLayout(self.layout)
-
-
 
     def create_search_tab(self):
         self.tab_search = QWidget()
@@ -212,14 +213,6 @@ class TabWidget(QWidget):
         self.tab_cars = QWidget()
         self.tab_cars.layout = QVBoxLayout(self)
 
-        # I think Imma leave this one out for now, don't see the point of loading them all
-        # # create refresh button
-        # bt_refresh_cars = QPushButton("Refresh")
-        # bt_refresh_cars.setDefault(True)
-        # bt_refresh_cars.clicked.connect(self.on_bt_refresh_cars_click)
-        # self.tab_cars.layout.addWidget(bt_refresh_cars)
-
-
         # create widget for adding search
         self.filter_cars_widget = QWidget()
 
@@ -266,10 +259,24 @@ class TabWidget(QWidget):
         # maybe add the option to download in json format, would be really easy to implement
         bt_download_cars = QPushButton("Download all cars to csv")
         bt_download_cars.setDefault(True)
-        bt_download_cars.clicked.connect(self.on_bt_download_cars)
+        bt_download_cars.clicked.connect(self.on_bt_download_cars_click)
         self.tab_cars.layout.addWidget(bt_download_cars)
 
         self.tab_cars.setLayout(self.tab_cars.layout)
+
+    def create_advanced_tab(self):
+        self.tab_advanced = QWidget()
+        self.tab_advanced.layout = QVBoxLayout(self)
+
+        # we add a button to download the data in csv format
+        # maybe add the option to download in json format, would be really easy to implement
+        bt_delete_data = QPushButton("DELETE ALL CARS FROM DATABASE")
+        bt_delete_data.setDefault(True)
+        bt_delete_data.clicked.connect(self.on_bt_delete_cars_click)
+        self.tab_advanced.layout.addWidget(bt_delete_data)
+        # self.tab_advanced.layout.addWidget(QLabel("If you want to add some info")
+
+        self.tab_advanced.setLayout(self.tab_advanced.layout)
 
     def on_bt_refresh_search_click(self):
         logger.info("Refresh searches ")
@@ -358,7 +365,6 @@ class TabWidget(QWidget):
                     filters[3] = ""
                     show_pop_up("Invalid date format. Please revise.")
 
-
         self.table_cars = TableModel(Items.CARS, filters)
         self.table_view_cars.setModel(self.table_cars)
         self.table_view_cars.resizeColumnsToContents()
@@ -370,7 +376,7 @@ class TabWidget(QWidget):
         # show_pop_up("NOT IMPLEMENTED YET")
 
     # will write the collected cars into a csv file (cars.csv, in current directory)
-    def on_bt_download_cars(self):
+    def on_bt_download_cars_click(self):
         # writes the collected cars into a csv file (excluding the links, might change later)
 
         cars = db.retrieveCars(getAll=True)
@@ -400,9 +406,13 @@ class TabWidget(QWidget):
                 currentDirectory = os.getcwd()
                 show_pop_up("Cars were downloaded to " + str(currentDirectory) + "\\cars.csv")
         except:
-            # traceback.print_exc()
             show_pop_up("Failed to download cars.")
             logger.exception("Failed to download cars: ")
+
+    def on_bt_delete_cars_click(self):
+        logger.warning("ALL CARS TO BE DELETED FROM DB")
+        db.deleteAllCars()
+        show_pop_up("Cars have been deleted from database.")
 
 
 if __name__ == '__main__':

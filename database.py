@@ -120,3 +120,14 @@ def removeSearch(key):
         db.child("Searches").child(key).remove()
     except:
         logger.exception("Error removing search.")
+
+
+# This function is only to be used in order to clear test data from the database online to reduce size
+# It deletes the Cars key and all of its children from the database
+def deleteAllCars():
+    try:
+        fire = pyrebase.initialize_app(firebaseConfig)
+        db = fire.database()
+        db.child("Cars").remove()
+    except:
+        logger.exception("Error deleting all cars from database.")
