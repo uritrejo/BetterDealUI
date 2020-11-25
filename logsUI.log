@@ -420,3 +420,4 @@ Traceback (most recent call last):
     for car in cars_json.each():
 TypeError: 'NoneType' object is not iterable
 2020-11-25 13:55:19,269 - BetterDealUI - INFO - Filter cars called with values: ['2014', '9000', '12000', '2020/11/24']
+2020-11-25 13:56:50,334 - BetterDealUI - INFO - Refresh searches 
