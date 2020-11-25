@@ -138,3 +138,261 @@ Exception
 2020-11-25 01:31:57,462 - BetterDealUI - INFO - Filter cars called with values: ['', '55', '', '2020/12/11']
 2020-11-25 01:32:51,725 - BetterDealUI - INFO - Filter cars called with values: ['', '55', '', '2020/12/11']
 2020-11-25 01:33:05,063 - BetterDealUI - INFO - Filter cars called with values: ['', '55', '77', '2020/12/11']
+2020-11-25 11:08:42,168 - BetterDealUI - ERROR - Error retrieving cars from the database:
+Traceback (most recent call last):
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\pyrebase\pyrebase.py", line 444, in raise_detailed_error
+    request_object.raise_for_status()
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\requests\models.py", line 862, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://betterdeals-de427.firebaseio.com/Cars.json?limitToFirst=200
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\database.py", line 96, in retrieveCars
+    cars_json = db.child("Cars").limit_to_first(MAX_QUERY_SIZE).get()
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\pyrebase\pyrebase.py", line 264, in get
+    raise_detailed_error(request_object)
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\pyrebase\pyrebase.py", line 448, in raise_detailed_error
+    raise HTTPError(e, request_object.text)
+requests.exceptions.HTTPError: [Errno 400 Client Error: Bad Request for url: https://betterdeals-de427.firebaseio.com/Cars.json?limitToFirst=200] {
+  "error" : "orderBy must be defined when other query parameters are defined"
+}
+
+2020-11-25 11:09:46,702 - BetterDealUI - INFO - Filter cars called with values: ['', '200', '3000', '']
+2020-11-25 11:09:46,894 - BetterDealUI - ERROR - Error retrieving cars from the database:
+Traceback (most recent call last):
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\pyrebase\pyrebase.py", line 444, in raise_detailed_error
+    request_object.raise_for_status()
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\requests\models.py", line 862, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://betterdeals-de427.firebaseio.com/Cars.json?orderBy=%2522Price%2522&startAt=200&endAt=3000&limitToFirst=200
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\database.py", line 86, in retrieveCars
+    end_at(int(price_to)).limit_to_first(MAX_QUERY_SIZE).get()
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\pyrebase\pyrebase.py", line 264, in get
+    raise_detailed_error(request_object)
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\pyrebase\pyrebase.py", line 448, in raise_detailed_error
+    raise HTTPError(e, request_object.text)
+requests.exceptions.HTTPError: [Errno 400 Client Error: Bad Request for url: https://betterdeals-de427.firebaseio.com/Cars.json?orderBy=%2522Price%2522&startAt=200&endAt=3000&limitToFirst=200] {
+  "error" : "orderBy must be a valid JSON encoded path"
+}
+
+2020-11-25 11:39:42,090 - BetterDealUI - INFO - Filter cars called with values: ['', '200', '3000', '']
+2020-11-25 11:39:42,353 - BetterDealUI - ERROR - Error retrieving cars from the database:
+Traceback (most recent call last):
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\pyrebase\pyrebase.py", line 444, in raise_detailed_error
+    request_object.raise_for_status()
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\requests\models.py", line 862, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://betterdeals-de427.firebaseio.com/Cars.json?orderBy=%2522Price%2522&startAt=200&endAt=3000&limitToFirst=200
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\database.py", line 86, in retrieveCars
+    end_at(int(price_to)).limit_to_first(MAX_QUERY_SIZE).get()
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\pyrebase\pyrebase.py", line 264, in get
+    raise_detailed_error(request_object)
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\pyrebase\pyrebase.py", line 448, in raise_detailed_error
+    raise HTTPError(e, request_object.text)
+requests.exceptions.HTTPError: [Errno 400 Client Error: Bad Request for url: https://betterdeals-de427.firebaseio.com/Cars.json?orderBy=%2522Price%2522&startAt=200&endAt=3000&limitToFirst=200] {
+  "error" : "orderBy must be a valid JSON encoded path"
+}
+
+2020-11-25 11:41:54,554 - BetterDealUI - INFO - Filter cars called with values: ['', '', '', '2020/11/24']
+2020-11-25 11:41:54,798 - BetterDealUI - ERROR - Error retrieving cars from the database:
+Traceback (most recent call last):
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\pyrebase\pyrebase.py", line 444, in raise_detailed_error
+    request_object.raise_for_status()
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\requests\models.py", line 862, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://betterdeals-de427.firebaseio.com/Cars.json?orderBy=%2522Date%2522&equalTo=%25222020%2F11%2F24%2522&limitToFirst=200
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\database.py", line 92, in retrieveCars
+    limit_to_first(MAX_QUERY_SIZE).get()
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\pyrebase\pyrebase.py", line 264, in get
+    raise_detailed_error(request_object)
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\pyrebase\pyrebase.py", line 448, in raise_detailed_error
+    raise HTTPError(e, request_object.text)
+requests.exceptions.HTTPError: [Errno 400 Client Error: Bad Request for url: https://betterdeals-de427.firebaseio.com/Cars.json?orderBy=%2522Date%2522&equalTo=%25222020%2F11%2F24%2522&limitToFirst=200] {
+  "error" : "orderBy must be a valid JSON encoded path"
+}
+
+2020-11-25 11:47:01,539 - BetterDealUI - ERROR - Error retrieving cars from the database:
+Traceback (most recent call last):
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\pyrebase\pyrebase.py", line 444, in raise_detailed_error
+    request_object.raise_for_status()
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\requests\models.py", line 862, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://betterdeals-de427.firebaseio.com/Cars.json?limitToFirst=%2522200%2522
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\database.py", line 98, in retrieveCars
+    cars_json = db.child("Cars").limit_to_first(str(MAX_QUERY_SIZE)).get()
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\pyrebase\pyrebase.py", line 264, in get
+    raise_detailed_error(request_object)
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\pyrebase\pyrebase.py", line 448, in raise_detailed_error
+    raise HTTPError(e, request_object.text)
+requests.exceptions.HTTPError: [Errno 400 Client Error: Bad Request for url: https://betterdeals-de427.firebaseio.com/Cars.json?limitToFirst=%2522200%2522] {
+  "error" : "orderBy must be defined when other query parameters are defined"
+}
+
+2020-11-25 11:47:34,553 - BetterDealUI - INFO - Filter cars called with values: ['', '', '', '2020/11/24']
+2020-11-25 11:47:34,728 - BetterDealUI - ERROR - Error retrieving cars from the database:
+Traceback (most recent call last):
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\pyrebase\pyrebase.py", line 444, in raise_detailed_error
+    request_object.raise_for_status()
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\requests\models.py", line 862, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://betterdeals-de427.firebaseio.com/Cars.json?orderBy=%2522Date%2522&equalTo=%2522%25222020%2F11%2F24%2522%2522
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\database.py", line 93, in retrieveCars
+    cars_json = db.child("Cars").order_by_child("Date").equal_to('"'+date+'"').get()
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\pyrebase\pyrebase.py", line 264, in get
+    raise_detailed_error(request_object)
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\pyrebase\pyrebase.py", line 448, in raise_detailed_error
+    raise HTTPError(e, request_object.text)
+requests.exceptions.HTTPError: [Errno 400 Client Error: Bad Request for url: https://betterdeals-de427.firebaseio.com/Cars.json?orderBy=%2522Date%2522&equalTo=%2522%25222020%2F11%2F24%2522%2522] {
+  "error" : "orderBy must be a valid JSON encoded path"
+}
+
+2020-11-25 12:02:37,897 - BetterDealUI - ERROR - Error retrieving cars from the database:
+Traceback (most recent call last):
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\pyrebase\pyrebase.py", line 444, in raise_detailed_error
+    request_object.raise_for_status()
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\requests\models.py", line 862, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://betterdeals-de427.firebaseio.com/Cars.json?limitToFirst=%2522200%2522
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\database.py", line 98, in retrieveCars
+    cars_json = db.child("Cars").limit_to_first(str(MAX_QUERY_SIZE)).get()
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\pyrebase\pyrebase.py", line 264, in get
+    raise_detailed_error(request_object)
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\pyrebase\pyrebase.py", line 448, in raise_detailed_error
+    raise HTTPError(e, request_object.text)
+requests.exceptions.HTTPError: [Errno 400 Client Error: Bad Request for url: https://betterdeals-de427.firebaseio.com/Cars.json?limitToFirst=%2522200%2522] {
+  "error" : "orderBy must be defined when other query parameters are defined"
+}
+
+2020-11-25 12:02:48,260 - BetterDealUI - INFO - Filter cars called with values: ['', '', '', '2020/11/24']
+2020-11-25 12:02:48,465 - BetterDealUI - ERROR - Error retrieving cars from the database:
+Traceback (most recent call last):
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\pyrebase\pyrebase.py", line 444, in raise_detailed_error
+    request_object.raise_for_status()
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\requests\models.py", line 862, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://betterdeals-de427.firebaseio.com/Cars.json?orderBy=%2522Date%2522&equalTo=%2522%25222020%2F11%2F24%2522%2522
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\database.py", line 93, in retrieveCars
+    cars_json = db.child("Cars").order_by_child("Date").equal_to('"'+date+'"').get()
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\pyrebase\pyrebase.py", line 264, in get
+    raise_detailed_error(request_object)
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\pyrebase\pyrebase.py", line 448, in raise_detailed_error
+    raise HTTPError(e, request_object.text)
+requests.exceptions.HTTPError: [Errno 400 Client Error: Bad Request for url: https://betterdeals-de427.firebaseio.com/Cars.json?orderBy=%2522Date%2522&equalTo=%2522%25222020%2F11%2F24%2522%2522] {
+  "error" : "orderBy must be a valid JSON encoded path"
+}
+
+2020-11-25 12:07:20,687 - BetterDealUI - ERROR - Error retrieving cars from the database:
+Traceback (most recent call last):
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\pyrebase\pyrebase.py", line 503, in raise_detailed_error
+    request_object.raise_for_status()
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\requests\models.py", line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://betterdeals-de427.firebaseio.com/Cars.json?limitToFirst=200
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\database.py", line 98, in retrieveCars
+    cars_json = db.child("Cars").limit_to_first(MAX_QUERY_SIZE).get()
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\pyrebase\pyrebase.py", line 281, in get
+    raise_detailed_error(request_object)
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\pyrebase\pyrebase.py", line 507, in raise_detailed_error
+    raise HTTPError(e, request_object.text)
+requests.exceptions.HTTPError: [Errno 400 Client Error: Bad Request for url: https://betterdeals-de427.firebaseio.com/Cars.json?limitToFirst=200] {
+  "error" : "orderBy must be defined when other query parameters are defined"
+}
+
+2020-11-25 12:07:35,269 - BetterDealUI - INFO - Filter cars called with values: ['', '', '', '2020/11/24']
+2020-11-25 12:08:02,538 - BetterDealUI - INFO - Filter cars called with values: ['', '1000', '3500', '2020/11/24']
+2020-11-25 12:08:02,714 - BetterDealUI - ERROR - Error retrieving cars from the database:
+Traceback (most recent call last):
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\pyrebase\pyrebase.py", line 503, in raise_detailed_error
+    request_object.raise_for_status()
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\requests\models.py", line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://betterdeals-de427.firebaseio.com/Cars.json?orderBy=%22Date%22&startAt=1000&endAt=3500&equalTo=%222020%2F11%2F24%22&limitToFirst=200
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\database.py", line 80, in retrieveCars
+    end_at(int(price_to)).order_by_child("Date").equal_to(date).limit_to_first(MAX_QUERY_SIZE).get()
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\pyrebase\pyrebase.py", line 281, in get
+    raise_detailed_error(request_object)
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\pyrebase\pyrebase.py", line 507, in raise_detailed_error
+    raise HTTPError(e, request_object.text)
+requests.exceptions.HTTPError: [Errno 400 Client Error: Bad Request for url: https://betterdeals-de427.firebaseio.com/Cars.json?orderBy=%22Date%22&startAt=1000&endAt=3500&equalTo=%222020%2F11%2F24%22&limitToFirst=200] {
+  "error" : "equalTo cannot be specified in addition to startAt or endAt"
+}
+
+2020-11-25 12:08:10,247 - BetterDealUI - INFO - Filter cars called with values: ['', '1000', '5000', '2020/11/24']
+2020-11-25 12:08:10,424 - BetterDealUI - ERROR - Error retrieving cars from the database:
+Traceback (most recent call last):
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\pyrebase\pyrebase.py", line 503, in raise_detailed_error
+    request_object.raise_for_status()
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\requests\models.py", line 943, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 400 Client Error: Bad Request for url: https://betterdeals-de427.firebaseio.com/Cars.json?orderBy=%22Date%22&startAt=1000&endAt=5000&equalTo=%222020%2F11%2F24%22&limitToFirst=200
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\database.py", line 80, in retrieveCars
+    end_at(int(price_to)).order_by_child("Date").equal_to(date).limit_to_first(MAX_QUERY_SIZE).get()
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\pyrebase\pyrebase.py", line 281, in get
+    raise_detailed_error(request_object)
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\pyrebase\pyrebase.py", line 507, in raise_detailed_error
+    raise HTTPError(e, request_object.text)
+requests.exceptions.HTTPError: [Errno 400 Client Error: Bad Request for url: https://betterdeals-de427.firebaseio.com/Cars.json?orderBy=%22Date%22&startAt=1000&endAt=5000&equalTo=%222020%2F11%2F24%22&limitToFirst=200] {
+  "error" : "equalTo cannot be specified in addition to startAt or endAt"
+}
+
+2020-11-25 12:08:53,916 - BetterDealUI - INFO - Filter cars called with values: ['', '1000', '5000', '']
+2020-11-25 12:47:06,014 - BetterDealUI - INFO - Filter cars called with values: ['mini cooper', '', '', '']
+2020-11-25 12:47:53,054 - BetterDealUI - INFO - Filter cars called with values: ['mini cooper', '3000', '6000', '']
+2020-11-25 12:48:07,215 - BetterDealUI - INFO - Filter cars called with values: ['', '3000', '6000', '']
+2020-11-25 12:48:19,570 - BetterDealUI - INFO - Filter cars called with values: ['', '3000', '6000', '2020/11/24']
+2020-11-25 12:48:34,583 - BetterDealUI - INFO - Filter cars called with values: ['mini cooper 2010', '3000', '6000', '2020/11/24']
+2020-11-25 12:48:44,157 - BetterDealUI - INFO - Filter cars called with values: ['mini cooper 2010', '3000', '', '2020/11/24']
+2020-11-25 12:53:35,338 - BetterDealUI - ERROR - Error retrieving cars from the database:
+Traceback (most recent call last):
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\database.py", line 88, in retrieveCars
+    if keyword != "":  # if we must filter by keyword
+UnboundLocalError: local variable 'keyword' referenced before assignment
+2020-11-25 12:53:35,341 - BetterDealUI - INFO - List of cars was empty or an error occurred. No file has been created.
+2020-11-25 12:58:42,802 - BetterDealUI - INFO - Filter cars called with values: ['', '55', '66', '']
+2020-11-25 12:58:43,137 - BetterDealUI - ERROR - Error retrieving cars from the database:
+Traceback (most recent call last):
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\database.py", line 84, in retrieveCars
+    for car in cars_json.each():
+TypeError: 'NoneType' object is not iterable

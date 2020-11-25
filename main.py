@@ -47,7 +47,7 @@ class TableModel(QAbstractTableModel):
         # probably call an extra method
 
         self.rows = db.retrieveCars(filters)
-        # to avoid wasting requests to the database, we'll use a dummy for now
+        # to avoid wasting requests to the database, we'll use a dummy to test
         # self.rows = [("Honda Civic", "4000", "2020/11/23", "hondacivic.com"),
         #              ("Mini Cooper", "7750", "2020/11/25", "minicooper.com"),
         #              ("Mustang", "11286", "2020/11/24", "mustang.com")]
@@ -367,10 +367,7 @@ class TabWidget(QWidget):
         show_pop_up("Displaying at most 200 cars from filtered search: Keyword: " + filters[0] +
                     ", Price from " + filters[1] + " to " + filters[2] + ", Date: " + filters[3])
 
-        show_pop_up("NOT IMPLEMENTED YET")
-        # print("Filter cars")
-        # print(self.edit_filter_cars.text())
-        # print("Price from: ", self.edit_price_from.text(), " to: ", self.edit_price_to.text())
+        # show_pop_up("NOT IMPLEMENTED YET")
 
     # will write the collected cars into a csv file (cars.csv, in current directory)
     def on_bt_download_cars(self):
