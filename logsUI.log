@@ -407,3 +407,16 @@ TypeError: 'NoneType' object is not iterable
 2020-11-25 13:40:59,750 - BetterDealUI - INFO - Refresh searches 
 2020-11-25 13:41:05,288 - BetterDealUI - INFO - Remove search called on ('pony', 'link')
 2020-11-25 13:41:05,468 - BetterDealUI - INFO - Refresh searches 
+2020-11-25 13:54:32,656 - BetterDealUI - INFO - Add search: coche / link
+2020-11-25 13:54:32,856 - BetterDealUI - INFO - Refresh searches 
+2020-11-25 13:54:39,246 - BetterDealUI - INFO - Remove search called on ('coche', 'link')
+2020-11-25 13:54:39,434 - BetterDealUI - INFO - Refresh searches 
+2020-11-25 13:54:51,120 - BetterDealUI - INFO - Filter cars called with values: ['2014', '', '', '']
+2020-11-25 13:55:02,911 - BetterDealUI - INFO - Filter cars called with values: ['2014', '9000', '12000', '']
+2020-11-25 13:55:13,451 - BetterDealUI - INFO - Filter cars called with values: ['2014', '9000', '12000', '2020/11/25']
+2020-11-25 13:55:13,648 - BetterDealUI - ERROR - Error retrieving cars from the database:
+Traceback (most recent call last):
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\database.py", line 84, in retrieveCars
+    for car in cars_json.each():
+TypeError: 'NoneType' object is not iterable
+2020-11-25 13:55:19,269 - BetterDealUI - INFO - Filter cars called with values: ['2014', '9000', '12000', '2020/11/24']
