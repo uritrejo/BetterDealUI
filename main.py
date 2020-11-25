@@ -6,6 +6,7 @@ import logging.handlers
 import os
 
 from enum import Enum
+
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5 import QtGui
@@ -44,7 +45,8 @@ class TableModel(QAbstractTableModel):
     def retrieveFilteredCars(self, filters):
         # here do stuff with the two filters to fill in the data with the correct stuff
         # probably call an extra method
-        self.rows = db.retrieveCars()
+
+        self.rows = db.retrieveCars(filters)
         # to avoid wasting requests to the database, we'll use a dummy for now
         # self.rows = [("Honda Civic", "4000", "2020/11/23", "hondacivic.com"),
         #              ("Mini Cooper", "7750", "2020/11/25", "minicooper.com"),
@@ -123,6 +125,7 @@ class TabWidget(QWidget):
         self.edit_filter_cars = None
         self.edit_price_from = None
         self.edit_price_to = None
+        self.edit_date = None
 
         # potentially will mess with the size:
         # self.tabs.resize(300, 200)
@@ -138,6 +141,8 @@ class TabWidget(QWidget):
         # Add tabs to widget
         self.layout.addWidget(self.tabs)
         self.setLayout(self.layout)
+
+
 
     def create_search_tab(self):
         self.tab_search = QWidget()
@@ -223,6 +228,8 @@ class TabWidget(QWidget):
         self.edit_filter_cars = QLineEdit()
         self.edit_price_from = QLineEdit()
         self.edit_price_to = QLineEdit()
+        self.edit_date = QLineEdit()
+        self.edit_date.setPlaceholderText("YYYY/MM/DD")
 
         bt_filter_cars = QPushButton("Filter Search")
         bt_filter_cars.setDefault(True)
@@ -235,15 +242,17 @@ class TabWidget(QWidget):
         filter_cars_layout.addWidget(self.edit_price_from, 0, 3)
         filter_cars_layout.addWidget(QLabel("to: "), 0, 4)
         filter_cars_layout.addWidget(self.edit_price_to, 0, 5)
+        filter_cars_layout.addWidget(QLabel("Date: "), 0, 6)
+        filter_cars_layout.addWidget(self.edit_date, 0, 7)
 
-        filter_cars_layout.addWidget(bt_filter_cars, 0, 6)
+        filter_cars_layout.addWidget(bt_filter_cars, 0, 8)
         self.filter_cars_widget.setLayout(filter_cars_layout)
 
         self.tab_cars.layout.addWidget(self.filter_cars_widget)
 
         # These are self... in order to access them from the on clicks
         # create the search table
-        self.table_cars = TableModel(Items.CARS)
+        self.table_cars = TableModel(Items.CARS, filters=["","","",""])
         self.table_view_cars = QTableView()
         self.table_view_cars.setModel(self.table_cars)
         self.table_view_cars.setSelectionBehavior(QAbstractItemView.SelectRows)
@@ -272,7 +281,7 @@ class TabWidget(QWidget):
 
     def on_bt_refresh_cars_click(self):
         logger.info("Refresh Cars")
-        self.table_cars = TableModel(Items.CARS)
+        self.table_cars = TableModel(Items.CARS, ["","","",""])
         self.table_view_cars.setModel(self.table_cars)
         self.table_view_cars.resizeColumnsToContents()
         self.table_view_cars.resizeRowsToContents()
@@ -303,30 +312,52 @@ class TabWidget(QWidget):
 
     def on_bt_filter_cars_click(self):
 
-        filters = [self.edit_filter_cars.text(), self.edit_price_from.text(), self.edit_price_to.text()]
+        filters = [self.edit_filter_cars.text(), self.edit_price_from.text(),
+                   self.edit_price_to.text(), self.edit_date.text()]
         logger.info("Filter cars called with values: " + str(filters))
 
         # we make sure the filters are valid:
-        if filters[0] == filters[1] == filters[2] == "":
+        if filters[0] == filters[1] == filters[2] == filters[3] == "":
             show_pop_up("Filters empty")
-        elif (filters[1] != "" and filters[2] == "") or (filters[1] == "" and filters[2] != ""):
-            # we set both values to null to avoid errors in the filters
-            filters[1] = ""
-            filters[2] = ""
-            show_pop_up("Price range incomplete, ignoring price ranges. Please fill in 'to' and 'from' to see results.")
+        else:
+            # if the price range is incomplete
+            if (filters[1] != "" and filters[2] == "") or (filters[1] == "" and filters[2] != ""):
+                # we set both values to null to avoid errors in the filters
+                filters[1] = ""
+                filters[2] = ""
+                show_pop_up("Price range incomplete, ignoring price ranges." +
+                            "Please fill in 'to' and 'from' to see results.")
 
-        # if we still have the price range values, we make sure they can be parsed to double
-        if filters[1] != "" and filters[2] != "":
-            try:  # we just want to know if it is possible
-                float(self.edit_price_from.text())
-            except:
-                logger.exception("Unable to parse price value to float.")
-                show_pop_up("Provided price values were invalid. Values must be numeric.")
+            # if we still have the price range values, we make sure they can be parsed to double
+            if filters[1] != "" and filters[2] != "":
+                try:  # we just want to know if it is possible
+                    float(self.edit_price_from.text())
+                    float(self.edit_price_to.text())
+                except:
+                    # we set them to an empty string to avoid errors
+                    filters[1] = ""
+                    filters[2] = ""
+                    logger.exception("Unable to parse price value to float.")
+                    show_pop_up("Provided price values were invalid. Values must be numeric.")
 
-        # aqui haz ifs de if not valid the filters, then show pop up
-        # if no filter, show pop up de que estas mostrando los 100 values primeros
-        # checa si los primeros son los mas recientes
-        # luego implementas la logica en la Table itself
+            # if we have a date included
+            if filters[3] != "":
+                if len(filters[3]) == 10:
+                    try:
+                        for c in range(len(filters[3])):
+                            if c != 4 and c != 7:
+                                int(filters[3][c])
+                            else:
+                                if filters[3][c] != '/':
+                                    raise Exception
+                    except:
+                        filters[3] = ""
+                        logger.exception("Invalid date format.")
+                        show_pop_up("Invalid date format. Please revise.")
+                else:
+                    filters[3] = ""
+                    show_pop_up("Invalid date format. Please revise.")
+
 
         self.table_cars = TableModel(Items.CARS, filters)
         self.table_view_cars.setModel(self.table_cars)
@@ -334,7 +365,7 @@ class TabWidget(QWidget):
         self.table_view_cars.resizeRowsToContents()
 
         show_pop_up("Displaying at most 200 cars from filtered search: Keyword: " + filters[0] +
-                    ", Price from " + filters[1] + " to " + filters[2])
+                    ", Price from " + filters[1] + " to " + filters[2] + ", Date: " + filters[3])
 
         show_pop_up("NOT IMPLEMENTED YET")
         # print("Filter cars")
@@ -345,7 +376,7 @@ class TabWidget(QWidget):
     def on_bt_download_cars(self):
         # writes the collected cars into a csv file (excluding the links, might change later)
 
-        cars = db.retrieveCars()
+        cars = db.retrieveCars(getAll=True)
         # could also be only retrieving the ones that are in the search at the moment
 
         # for testing purposes:

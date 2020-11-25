@@ -114,3 +114,27 @@ Traceback (most recent call last):
     cars[i][1].encode('utf-8').decode('utf-8'),  # price
 AttributeError: 'float' object has no attribute 'encode'
 2020-11-24 20:30:27,102 - BetterDealUI - INFO - Filter cars called with values: ['', '', '']
+2020-11-25 00:58:21,435 - BetterDealUI - ERROR - Error retrieving cars from the database:
+Traceback (most recent call last):
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\database.py", line 56, in retrieveCars
+    if filters[0] != "" and filters[1] != "" and filters[2] != "":
+IndexError: list index out of range
+2020-11-25 01:07:36,041 - BetterDealUI - ERROR - Error retrieving cars from the database:
+Traceback (most recent call last):
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\database.py", line 58, in retrieveCars
+    if filters[0] != "" and filters[1] != "" and filters[2] != "":
+IndexError: list index out of range
+2020-11-25 01:29:55,236 - BetterDealUI - INFO - Filter cars called with values: ['', '', '', '']
+2020-11-25 01:30:08,836 - BetterDealUI - INFO - Filter cars called with values: ['', '', '', '55']
+2020-11-25 01:31:19,591 - BetterDealUI - INFO - Filter cars called with values: ['', '', '', '']
+2020-11-25 01:31:25,310 - BetterDealUI - INFO - Filter cars called with values: ['', '', '', 'dd']
+2020-11-25 01:31:35,993 - BetterDealUI - INFO - Filter cars called with values: ['', '', '', '2020*88*99']
+2020-11-25 01:31:35,994 - BetterDealUI - ERROR - Invalid date format.
+Traceback (most recent call last):
+  File "C:/Users/urit/OneDrive/Escritorio/uOttawa/5th year/BetterDealUI/main.py", line 352, in on_bt_filter_cars_click
+    raise Exception
+Exception
+2020-11-25 01:31:47,256 - BetterDealUI - INFO - Filter cars called with values: ['', '', '', '2020/12/11']
+2020-11-25 01:31:57,462 - BetterDealUI - INFO - Filter cars called with values: ['', '55', '', '2020/12/11']
+2020-11-25 01:32:51,725 - BetterDealUI - INFO - Filter cars called with values: ['', '55', '', '2020/12/11']
+2020-11-25 01:33:05,063 - BetterDealUI - INFO - Filter cars called with values: ['', '55', '77', '2020/12/11']

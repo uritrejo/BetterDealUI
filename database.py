@@ -46,12 +46,30 @@ def retrieveSearches():
     return searches, identifiers
 
 
-def retrieveCars():
+def retrieveCars(filters=["","","",""], getAll=False):
     cars = []
     try:
         fire = pyrebase.initialize_app(firebaseConfig)
         db = fire.database()
-        cars_json = db.child('Cars').get()
+
+        if getAll:
+            cars_json = db.child('Cars').get()
+        # if we have both a keyword and price ranges:
+        if filters[0] != "" and filters[1] != "" and filters[2] != "":
+            # filter all
+            print("Filter")
+        # if we only have a keyword
+        elif filters[0] != "":
+            # filter by keyword
+            print("Filter")
+        # if we only have a price range:
+        elif filters[1] != "" and filters[2] != "":
+            # filter by price range
+            print("Filter")
+        # if there are no filters
+        else:
+            cars_json = db.child('Cars').get()
+
         for car in cars_json.each():
             new_car = (car.val()['Model'], car.val()['Price'], car.val()['Date'], car.val()['Link'])
             cars.append(new_car)
