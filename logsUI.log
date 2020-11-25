@@ -19,3 +19,98 @@
 2020-11-23 15:47:38,601 - BetterDealUI - INFO - Cars were downloaded to 'cars.csv'
 2020-11-23 17:39:38,441 - BetterDealUI - INFO - Cars were downloaded to 'cars.csv'
 2020-11-23 17:44:07,737 - BetterDealUI - INFO - Add search: Pony / lelink.com
+2020-11-24 18:22:26,320 - BetterDealUI - INFO - Refresh searches 
+2020-11-24 18:22:32,015 - BetterDealUI - INFO - Refresh searches 
+2020-11-24 18:23:13,872 - BetterDealUI - INFO - Refresh searches 
+2020-11-24 18:23:16,143 - BetterDealUI - INFO - Refresh searches 
+2020-11-24 18:23:47,935 - BetterDealUI - INFO - Refresh searches 
+2020-11-24 18:23:47,938 - BetterDealUI - ERROR - Error retrieving searches: 
+Traceback (most recent call last):
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\requests\packages\urllib3\connection.py", line 142, in _new_conn
+    (self.host, self.port), self.timeout, **extra_kw)
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\requests\packages\urllib3\util\connection.py", line 75, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+  File "C:\Users\urit\Anaconda3\lib\socket.py", line 745, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno 11001] getaddrinfo failed
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\requests\packages\urllib3\connectionpool.py", line 595, in urlopen
+    chunked=chunked)
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\requests\packages\urllib3\connectionpool.py", line 352, in _make_request
+    self._validate_conn(conn)
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\requests\packages\urllib3\connectionpool.py", line 831, in _validate_conn
+    conn.connect()
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\requests\packages\urllib3\connection.py", line 254, in connect
+    conn = self._new_conn()
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\requests\packages\urllib3\connection.py", line 151, in _new_conn
+    self, "Failed to establish a new connection: %s" % e)
+requests.packages.urllib3.exceptions.NewConnectionError: <requests.packages.urllib3.connection.VerifiedHTTPSConnection object at 0x000002335EE53908>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\requests\adapters.py", line 423, in send
+    timeout=timeout
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\requests\packages\urllib3\connectionpool.py", line 668, in urlopen
+    release_conn=release_conn, **response_kw)
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\requests\packages\urllib3\connectionpool.py", line 668, in urlopen
+    release_conn=release_conn, **response_kw)
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\requests\packages\urllib3\connectionpool.py", line 668, in urlopen
+    release_conn=release_conn, **response_kw)
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\requests\packages\urllib3\connectionpool.py", line 640, in urlopen
+    _stacktrace=sys.exc_info()[2])
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\requests\packages\urllib3\util\retry.py", line 287, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+requests.packages.urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='betterdeals-de427.firebaseio.com', port=443): Max retries exceeded with url: /Searches.json (Caused by NewConnectionError('<requests.packages.urllib3.connection.VerifiedHTTPSConnection object at 0x000002335EE53908>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed',))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\database.py", line 33, in retrieveSearches
+    searches_json = db.child('Searches').get()
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\pyrebase\pyrebase.py", line 263, in get
+    request_object = self.requests.get(request_ref, headers=headers)
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\requests\sessions.py", line 488, in get
+    return self.request('GET', url, **kwargs)
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\requests\sessions.py", line 475, in request
+    resp = self.send(prep, **send_kwargs)
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\requests\sessions.py", line 596, in send
+    r = adapter.send(request, **kwargs)
+  File "C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI\venv\lib\site-packages\requests\adapters.py", line 487, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='betterdeals-de427.firebaseio.com', port=443): Max retries exceeded with url: /Searches.json (Caused by NewConnectionError('<requests.packages.urllib3.connection.VerifiedHTTPSConnection object at 0x000002335EE53908>: Failed to establish a new connection: [Errno 11001] getaddrinfo failed',))
+2020-11-24 18:24:30,216 - BetterDealUI - INFO - Refresh searches 
+2020-11-24 18:27:41,498 - BetterDealUI - INFO - Cars were downloaded to C:\Users\urit\OneDrive\Escritorio\uOttawa\5th year\BetterDealUI/cars.csv
+2020-11-24 20:16:19,090 - BetterDealUI - INFO - Filter cars called with values: ['', 'lol', 'lol']
+2020-11-24 20:16:19,104 - BetterDealUI - ERROR - Unable to parse price value to float.
+Traceback (most recent call last):
+  File "C:/Users/urit/OneDrive/Escritorio/uOttawa/5th year/BetterDealUI/main.py", line 319, in on_bt_filter_cars_click
+    float(self.edit_price_from.text())
+ValueError: could not convert string to float: 'lol'
+2020-11-24 20:16:27,479 - BetterDealUI - INFO - Filter cars called with values: ['', '50', '']
+2020-11-24 20:16:38,241 - BetterDealUI - INFO - Filter cars called with values: ['', 'POny', '']
+2020-11-24 20:16:50,292 - BetterDealUI - INFO - Filter cars called with values: ['Yoooo', '', '']
+2020-11-24 20:16:52,772 - BetterDealUI - INFO - Filter cars called with values: ['Yoooo', '', '']
+2020-11-24 20:16:57,034 - BetterDealUI - INFO - Filter cars called with values: ['', '', '']
+2020-11-24 20:20:05,460 - BetterDealUI - INFO - Filter cars called with values: ['', '', '']
+2020-11-24 20:23:06,280 - BetterDealUI - INFO - Filter cars called with values: ['', '', '']
+2020-11-24 20:23:26,531 - BetterDealUI - INFO - Filter cars called with values: ['', '', '']
+2020-11-24 20:23:33,864 - BetterDealUI - INFO - Filter cars called with values: ['Yooo', '', '']
+2020-11-24 20:23:44,615 - BetterDealUI - INFO - Filter cars called with values: ['Yooo', '55', '']
+2020-11-24 20:23:56,868 - BetterDealUI - INFO - Filter cars called with values: ['Yooo', '', '44']
+2020-11-24 20:24:05,086 - BetterDealUI - INFO - Filter cars called with values: ['Yooo', '55', '44']
+2020-11-24 20:24:08,746 - BetterDealUI - INFO - Filter cars called with values: ['Yooo', '55', '44']
+2020-11-24 20:26:26,223 - BetterDealUI - ERROR - Failed to download cars: 
+Traceback (most recent call last):
+  File "C:/Users/urit/OneDrive/Escritorio/uOttawa/5th year/BetterDealUI/main.py", line 360, in on_bt_download_cars
+    with open('cars.csv', 'w', newline='') as file:
+PermissionError: [Errno 13] Permission denied: 'cars.csv'
+2020-11-24 20:26:38,998 - BetterDealUI - ERROR - Failed to download cars: 
+Traceback (most recent call last):
+  File "C:/Users/urit/OneDrive/Escritorio/uOttawa/5th year/BetterDealUI/main.py", line 366, in on_bt_download_cars
+    cars[i][1].encode('utf-8').decode('utf-8'),  # price
+AttributeError: 'float' object has no attribute 'encode'
+2020-11-24 20:30:27,102 - BetterDealUI - INFO - Filter cars called with values: ['', '', '']

@@ -40,7 +40,7 @@ def retrieveSearches():
             identifiers.append(search.key())
     except:
         # print("Error retrieving searches")
-        logger.error("Error retrieving searches: " + traceback.print_exc())
+        logger.exception("Error retrieving searches: ")
 
     # later you could do return links, models (if ever needed for the UI)
     return searches, identifiers
@@ -57,7 +57,7 @@ def retrieveCars():
             cars.append(new_car)
     except:
         # print("Error retrieving cars from the database.")
-        logger.error("Error retrieving cars from the database:" + traceback.print_exc())
+        logger.exception("Error retrieving cars from the database:")
     return cars
 
 
@@ -71,7 +71,7 @@ def addNewSearch(link, model):
         }
         db.child('Searches').push(search)
     except:
-        logger.error("Error adding search." + traceback.print_exc())
+        logger.exception("Error adding search.")
 
 
 # removes the selected search
@@ -81,4 +81,4 @@ def removeSearch(key):
         db = fire.database()
         db.child("Searches").child(key).remove()
     except:
-        logger.error("Error removing search." + traceback.print_exc())
+        logger.exception("Error removing search.")

@@ -2,14 +2,14 @@ import csv
 import sys
 import logging
 import logging.handlers
-import traceback
+# import traceback
+import os
 
 from enum import Enum
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5 import QtGui
 import database as db
-
 
 
 # we set the logger configuration to write to a file, and also to print to terminal
@@ -31,18 +31,24 @@ class Items(Enum):
 
 class TableModel(QAbstractTableModel):
 
-    def __init__(self, item_type):
+    def __init__(self, item_type, filters=[]):
         super().__init__()
         if item_type == Items.SEARCHES:
             self.headers = ["Model", "Link"]
             self.rows, self.row_identifiers = db.retrieveSearches()
         elif item_type == Items.CARS:
             self.headers = ["Model", "Price", "Date", "Link"]
-            # self.rows = db.retrieveCars()
-            # to avoid wasting requests to the database, we'll use a dummy for now
-            self.rows = [("Honda Civic", "4000", "2020/11/23", "hondacivic.com"),
-                        ("Mini Cooper", "7750", "2020/11/25", "minicooper.com"),
-                        ("Mustang", "11286", "2020/11/24", "mustang.com")]
+            self.retrieveFilteredCars(filters)
+
+    # fills in the rows according to the filters
+    def retrieveFilteredCars(self, filters):
+        # here do stuff with the two filters to fill in the data with the correct stuff
+        # probably call an extra method
+        self.rows = db.retrieveCars()
+        # to avoid wasting requests to the database, we'll use a dummy for now
+        # self.rows = [("Honda Civic", "4000", "2020/11/23", "hondacivic.com"),
+        #              ("Mini Cooper", "7750", "2020/11/25", "minicooper.com"),
+        #              ("Mustang", "11286", "2020/11/24", "mustang.com")]
 
     def rowCount(self, parent):
         return len(self.rows)
@@ -249,7 +255,7 @@ class TabWidget(QWidget):
 
         # we add a button to download the data in csv format
         # maybe add the option to download in json format, would be really easy to implement
-        bt_download_cars = QPushButton("Download cars to csv")
+        bt_download_cars = QPushButton("Download all cars to csv")
         bt_download_cars.setDefault(True)
         bt_download_cars.clicked.connect(self.on_bt_download_cars)
         self.tab_cars.layout.addWidget(bt_download_cars)
@@ -262,6 +268,7 @@ class TabWidget(QWidget):
         self.table_view_search.setModel(self.table_search)
         self.table_view_search.resizeColumnsToContents()
         self.table_view_search.resizeRowsToContents()
+        show_pop_up("Searches have been refreshed.")
 
     def on_bt_refresh_cars_click(self):
         logger.info("Refresh Cars")
@@ -269,6 +276,7 @@ class TabWidget(QWidget):
         self.table_view_cars.setModel(self.table_cars)
         self.table_view_cars.resizeColumnsToContents()
         self.table_view_cars.resizeRowsToContents()
+        show_pop_up("Cars have been refreshed.")
 
     def on_bt_add_search_click(self):
         if self.edit_model_search.text() == "" or self.edit_link_search.text() == "":
@@ -294,18 +302,56 @@ class TabWidget(QWidget):
         self.on_bt_refresh_search_click()
 
     def on_bt_filter_cars_click(self):
-        print("Filter cars")
-        print(self.edit_filter_cars.text())
-        print("Price from: ", self.edit_price_from.text(), " to: ", self.edit_price_to.text())
 
+        filters = [self.edit_filter_cars.text(), self.edit_price_from.text(), self.edit_price_to.text()]
+        logger.info("Filter cars called with values: " + str(filters))
+
+        # we make sure the filters are valid:
+        if filters[0] == filters[1] == filters[2] == "":
+            show_pop_up("Filters empty")
+        elif (filters[1] != "" and filters[2] == "") or (filters[1] == "" and filters[2] != ""):
+            # we set both values to null to avoid errors in the filters
+            filters[1] = ""
+            filters[2] = ""
+            show_pop_up("Price range incomplete, ignoring price ranges. Please fill in 'to' and 'from' to see results.")
+
+        # if we still have the price range values, we make sure they can be parsed to double
+        if filters[1] != "" and filters[2] != "":
+            try:  # we just want to know if it is possible
+                float(self.edit_price_from.text())
+            except:
+                logger.exception("Unable to parse price value to float.")
+                show_pop_up("Provided price values were invalid. Values must be numeric.")
+
+        # aqui haz ifs de if not valid the filters, then show pop up
+        # if no filter, show pop up de que estas mostrando los 100 values primeros
+        # checa si los primeros son los mas recientes
+        # luego implementas la logica en la Table itself
+
+        self.table_cars = TableModel(Items.CARS, filters)
+        self.table_view_cars.setModel(self.table_cars)
+        self.table_view_cars.resizeColumnsToContents()
+        self.table_view_cars.resizeRowsToContents()
+
+        show_pop_up("Displaying at most 200 cars from filtered search: Keyword: " + filters[0] +
+                    ", Price from " + filters[1] + " to " + filters[2])
+
+        show_pop_up("NOT IMPLEMENTED YET")
+        # print("Filter cars")
+        # print(self.edit_filter_cars.text())
+        # print("Price from: ", self.edit_price_from.text(), " to: ", self.edit_price_to.text())
+
+    # will write the collected cars into a csv file (cars.csv, in current directory)
     def on_bt_download_cars(self):
         # writes the collected cars into a csv file (excluding the links, might change later)
 
-        # cars = db.retrieveCars()
+        cars = db.retrieveCars()
+        # could also be only retrieving the ones that are in the search at the moment
+
         # for testing purposes:
-        cars = [("Honda Civic", "4000", "2020/11/23", "hondacivic.com"),
-                     ("Mini Cooper", "7750", "2020/11/25", "minicooper.com"),
-                     ("Mustang", "11286", "2020/11/24", "mustang.com")]
+        # cars = [("Honda Civic", "4000", "2020/11/23", "hondacivic.com"),
+        #              ("Mini Cooper", "7750", "2020/11/25", "minicooper.com"),
+        #              ("Mustang", "11286", "2020/11/24", "mustang.com")]
 
         if len(cars) == 0:
             logger.info("List of cars was empty or an error occurred. No file has been created.")
@@ -319,16 +365,16 @@ class TabWidget(QWidget):
                 for i in range(len(cars)):
                     # the encoding is to avoid issues we were having with some characters
                     car_formatted = [cars[i][0].encode('utf-8').decode('utf-8'),  # model
-                                     cars[i][1].encode('utf-8').decode('utf-8'),  # price
+                                     cars[i][1],  # price
                                      cars[i][2].encode('utf-8').decode('utf-8'),  # date
                                      cars[i][3].encode('utf-8').decode('utf-8')]   # link
                     writer.writerow(car_formatted)
-                logger.info("Cars were downloaded to 'cars.csv'")
-                show_pop_up("Cars were downloaded to 'cars.csv'")
+                currentDirectory = os.getcwd()
+                show_pop_up("Cars were downloaded to " + str(currentDirectory) + "\\cars.csv")
         except:
-            traceback.print_exc()
+            # traceback.print_exc()
             show_pop_up("Failed to download cars.")
-            logger.error("Failed to download cars: " + traceback.print_exc())
+            logger.exception("Failed to download cars: ")
 
 
 if __name__ == '__main__':
